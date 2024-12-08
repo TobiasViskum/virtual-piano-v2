@@ -1,0 +1,367 @@
+main {
+  background-color: white;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-container {
+  height: 100%;
+  z-index: 10000;
+}
+
+.settings-navbar {
+  position: fixed;
+  display: flex;
+  column-gap: 32px;
+  align-items: center;
+  padding-inline: 8px;
+  height: 64px;
+  width: 100%;
+  border-bottom: 2px solid black;
+  background-color: white;
+  z-index: 10000;
+}
+
+#mode-popover-button {
+  border-radius: 8px;
+  border: none;
+
+  #mode-popover {
+    padding: 8px;
+    row-gap: 8px;
+    flex-direction: column;
+    position: fixed;
+    margin: 0;
+    inset: auto;
+    top: 56px;
+    right: 8px;
+    border-radius: 8px;
+    border: none;
+    background-color: rgb(192, 192, 192);
+
+    &:popover-open {
+      display: flex;
+    }
+
+    div {
+      background-color: red;
+      padding-inline: 8px;
+      padding-block: 2px;
+      border-radius: 4px;
+
+      &[data-selected="true"] {
+        background-color: green;
+      }
+    }
+  }
+}
+
+.recorder {
+  p {
+    margin-bottom: 2px;
+  }
+}
+
+.midi-connect-button {
+  height: 40px;
+  width: 128px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+
+  &[data-midi-is-connected="true"] {
+    background-color: green;
+  }
+
+  &[data-midi-is-connected="false"] {
+    background-color: red;
+  }
+
+  h4 {
+    font-size: 1rem;
+  }
+
+  p {
+    font-size: 0.85rem;
+  }
+}
+
+#midi-connect-popover {
+  position: absolute;
+  margin: 0;
+  inset: auto;
+  top: 56px;
+  width: 128px;
+  padding: 8px;
+  border-radius: 16px;
+  height: 192px;
+  border: 0;
+  background-color: rgb(192, 192, 192);
+
+  button {
+    width: 100%;
+  }
+
+  ul {
+    margin-top: 8px;
+    height: 140px;
+    overflow-y: scroll;
+
+    li {
+      margin-top: 8px;
+      border: 1px solid black;
+      border-radius: 8px;
+      padding: 2px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgb(210, 210, 210);
+      }
+    }
+  }
+}
+
+#midi-disconnect-popover {
+  position: absolute;
+  margin: 0;
+  inset: auto;
+  top: 56px;
+  width: 128px;
+  border-radius: 16px;
+  height: 32px;
+  border: 0;
+  background-color: red;
+
+  button {
+    width: 100%;
+    height: 100%;
+    background-color: red;
+    border: none;
+    border-radius: 8px;
+  }
+}
+
+.speed-control {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+
+  p {
+    font-weight: 400;
+  }
+
+  div {
+    display: flex;
+    column-gap: 8px;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+    }
+
+    input {
+      cursor: pointer;
+    }
+  }
+}
+
+.import-midi {
+  display: flex;
+
+  align-items: end;
+  column-gap: 8px;
+
+  > button {
+    height: 32px;
+    width: 32px;
+    aspect-ratio: square;
+    border-radius: 4px;
+    background-color: rgb(202, 82, 82);
+    cursor: pointer;
+  }
+}
+
+.import-video {
+  display: flex;
+  align-items: end;
+  column-gap: 8px;
+
+  div {
+    button {
+      height: 32px;
+      width: 32px;
+      aspect-ratio: square;
+      border-radius: 4px;
+      background-color: rgb(202, 82, 82);
+      cursor: pointer;
+    }
+  }
+}
+
+.piano-view {
+  --white-key-rel-width: 1.8%;
+  --black-key-rel-width: 0.98%;
+  --white-key-spacing-rel-width: 0.14%;
+
+  width: 100vw;
+  position: relative;
+  table-layout: fixed;
+
+  > table {
+    position: relative;
+    width: 100%;
+  }
+
+  /* To cover up long nodes in the bottom */
+  &::before {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: black;
+    z-index: 100;
+    content: "";
+    bottom: 0px;
+  }
+
+  &[data-has-loaded-video="false"] {
+    &::after {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background-color: black;
+      z-index: 100;
+      content: "";
+      top: 0px;
+    }
+
+    --height: calc(100svw * 0.122);
+
+    background-color: black;
+    min-height: var(--height);
+
+    video {
+      display: none;
+    }
+
+    table {
+      min-height: var(--height);
+      z-index: 10;
+    }
+
+    .piano-scaling-slider {
+      z-index: -10;
+      opacity: 0;
+      height: 0;
+    }
+  }
+
+  &[data-has-loaded-video="true"] {
+    --height: calc(100svw * 0.2);
+
+    background-color: black;
+    min-height: var(--height);
+
+    table {
+      min-height: var(--height);
+      max-height: var(--height);
+
+      z-index: 0;
+      left: 0;
+      bottom: 0;
+      opacity: 0;
+
+      beam {
+        opacity: 1;
+      }
+    }
+
+    video {
+      width: 100vw;
+      min-height: var(--height);
+      max-height: var(--height);
+      object-fit: cover;
+      z-index: 10;
+      position: absolute;
+      bottom: 0;
+    }
+
+    .piano-scaling-slider {
+      --distance-to-first-c: calc(
+        var(--white-key-rel-width) * 2 + var(--white-key-spacing-rel-width) * 3
+      );
+      --octave-distance: calc(
+        var(--white-key-rel-width) * 7 + var(--white-key-spacing-rel-width) * 6
+      );
+
+      position: absolute;
+      width: 100vw;
+      bottom: calc(100vw * 0.2 + 100vw * 0.009);
+      left: 0;
+      z-index: 10000;
+
+      div {
+        display: flex;
+        align-items: center;
+        height: 8px;
+        background-color: red;
+        position: relative;
+        border-radius: 4px;
+
+        .scale-button {
+          position: absolute;
+          border-radius: 999px;
+          width: var(--white-key-rel-width);
+          aspect-ratio: 1 / 1;
+          background-color: black;
+          color: white;
+          font-size: 0.75rem;
+          border: none;
+
+          &::after {
+            content: "";
+            left: 50%;
+            bottom: calc(var(--height) * -1);
+            position: absolute;
+            width: 2px;
+            background-color: red;
+            height: var(--height);
+          }
+        }
+      }
+    }
+  }
+}
+
+.white-key {
+  height: 100%;
+  position: relative;
+}
+
+.black-key {
+  top: 0;
+  position: absolute;
+  background-color: black;
+  width: 59%;
+  height: 66.67%;
+  z-index: 100;
+  content: "";
+}
+
+.black-key-none {
+  display: none;
+}
+
+.black-key-small-dist {
+  left: 59.1%;
+}
+
+.black-key-medium-dist {
+  left: 72.7%;
+}
+
+.black-key-long-dist {
+  left: 86.4%;
+}

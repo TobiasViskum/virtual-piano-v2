@@ -1,0 +1,107 @@
+main {
+  width: 100vw;
+  height: 100vh;
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.piano-notes-in-clef {
+  height: 400px;
+
+  > h2 {
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.5rem;
+  }
+}
+
+.piano-stave {
+  display: flex;
+  height: 150px;
+  margin-top: 96px;
+
+  > svg {
+    width: 100px;
+    height: 200px;
+    z-index: 100;
+    min-width: 110px;
+
+    &.treble-clef > g > path {
+      transform: scale(3) translateX(-10px) translateY(-40px);
+    }
+
+    &.bass-clef > g > path {
+      transform: scale(3) translateX(-10px) translateY(-35.5px);
+    }
+  }
+
+  > div {
+    transform: translateX(-110px) translateY(45px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    height: 70%;
+    width: 100vw;
+
+    .stave-notes-container {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      margin-left: 300px;
+
+      .note {
+        position: absolute;
+        left: 0;
+        top: calc(26px * 0);
+        width: 26px;
+        height: 26px;
+        border-top-left-radius: 60%;
+        border-top-right-radius: 40%;
+        border-bottom-right-radius: 60%;
+        border-bottom-left-radius: 40%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        background-color: black;
+
+        &.with-line-center {
+          &::after {
+            content: "";
+            position: absolute;
+            height: 3px;
+            width: calc(100% + 14px);
+            background-color: black;
+            z-index: -1;
+            border-radius: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+          }
+        }
+
+        &.with-line-above {
+          &::after {
+            content: "";
+            position: absolute;
+            height: 3px;
+            width: calc(100% + 14px);
+            background-color: black;
+            z-index: -1;
+            border-radius: 12px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-13px);
+          }
+        }
+      }
+    }
+
+    .stave-line {
+      height: 2px;
+      width: 100vw;
+      background-color: black;
+    }
+  }
+}
